@@ -1,0 +1,1 @@
+This app is a boilerplate of a Stripe subscription service with Vue 3 Composition API. Use it however you like following Stripe's best practices, rules and regulations.
