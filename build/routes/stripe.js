@@ -13,11 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const router = express_1.default.Router();
-dotenv_1.default.config();
+console.log(process.env.STRIPE_SECRET_KEY);
 // Your Db connection
+const func = () => __awaiter(void 0, void 0, void 0, function* () {
+    const subscription = yield stripe.subscriptions.retrieve("sub_1MKNrwFCuFQMlWYDISji4pmq");
+    console.log(subscription.items);
+});
+func();
 router.post('/create-customer', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, fullname, address, city, zipCode, state } = req.body;
     // validation
@@ -64,7 +70,7 @@ router.post('/create-subscription', (req, res) => __awaiter(void 0, void 0, void
     try {
         const subscription = yield stripe.subscriptions.create({
             customer: customerId,
-            items: [{ price: priceId }],
+            items: [{ price: priceId }, { price: 'price_1MKNrFFCuFQMlWYDMTTwFoYN' }],
             payment_behavior: 'default_incomplete',
             payment_settings: { save_default_payment_method: 'on_subscription' },
             expand: ['latest_invoice.payment_intent'],

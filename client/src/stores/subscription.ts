@@ -16,7 +16,7 @@ interface ChangeParams extends PlanChose {
   priceId: string
 }
 
-const url = '/stripe'
+const url = 'http://localhost:3000/stripe'
 
 export const usePlanStore = defineStore('plan', {
   state: () => ({

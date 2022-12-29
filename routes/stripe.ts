@@ -1,11 +1,18 @@
 import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const router = express.Router()
 
-dotenv.config();
+console.log(process.env.STRIPE_SECRET_KEY)
 
 // Your Db connection
+const func = async () => {
+  const subscription = await stripe.subscriptions.retrieve("sub_1MKNrwFCuFQMlWYDISji4pmq");
+  console.log(subscription.items);
+}
+
+func();
 
 router.post('/create-customer', async (req, res) => {
   const { email, fullname, address, city, zipCode, state } = req.body;
@@ -14,7 +21,6 @@ router.post('/create-customer', async (req, res) => {
   if (!email && !fullname && !address && !city && !zipCode && !state) {
     return res.sendStatus(400);
   }
-
   try {
     const customer = await stripe.customers.create({
       email: email,
@@ -59,7 +65,7 @@ router.post('/create-subscription', async (req, res) => {
   try {
     const subscription = await stripe.subscriptions.create({
       customer: customerId,
-      items: [{ price: priceId }],
+      items: [{ price: priceId }, { price: 'price_1MKNrFFCuFQMlWYDMTTwFoYN' }],
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],

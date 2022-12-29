@@ -6,7 +6,7 @@ interface UserData {
   name: string
 }
 
-const url = '/stripe'
+const url = 'http://localhost:3000/stripe'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
